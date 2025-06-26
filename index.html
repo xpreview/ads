@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ads Gallery</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      color: white;
+    }
+    h1 {
+      margin: 0;
+    }
+    .search-box {
+      text-align: center;
+      margin: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .caption {
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #333;
+    }
+    #loadMoreBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #111;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #loadMoreBtn:hover {
+      background-color: #444;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      background: #111;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📢 Our Latest Ads & Offers</h1>
+</header>
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search ads...">
+</div>
+
+<div class="gallery" id="gallery">
+  <!-- Posters will be loaded here via JavaScript -->
+</div>
+
+<button id="loadMoreBtn">Load More</button>
+
+<footer>
+  &copy; 2025 Your Brand | Contact: 9091544508
+</footer>
+
+<script>
+  const posters = [
+    { img: "https://via.placeholder.com/300x400?text=Ad+1", caption: "Ad Title or Offer" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+2", caption: "Another Deal Here" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+3", caption: "Discounts Starting at ₹35" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+4", caption: "New Launch Offer" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+5", caption: "Biggest Sale Ever" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+6", caption: "Limited Time Deal" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+7", caption: "Flat 50% Off" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+8", caption: "Stream for Just ₹35" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+9", caption: "Mega Combo Pack" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+10", caption: "Family Subscription" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+11", caption: "CCTV Offer" },
+    { img: "https://via.placeholder.com/300x400?text=Ad+12", caption: "WiFi Connection" },
+    // Add more as needed...
+  ];
+
+  const gallery = document.getElementById("gallery");
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+  const searchInput = document.getElementById("searchInput");
+
+  let loadedCount = 0;
+  const loadBatch = 6;
+
+  function renderPosters(filter = "") {
+    gallery.innerHTML = "";
+    let filtered = posters.filter(p => p.caption.toLowerCase().includes(filter.toLowerCase()));
+    let visible = filtered.slice(0, loadedCount);
+    visible.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<img src="${p.img}" alt="${p.caption}"><div class="caption">${p.caption}</div>`;
+      gallery.appendChild(card);
+    });
+
+    if (loadedCount >= filtered.length) {
+      loadMoreBtn.style.display = "none";
+    } else {
+      loadMoreBtn.style.display = "block";
+    }
+  }
+
+  function loadMore() {
+    loadedCount += loadBatch;
+    renderPosters(searchInput.value);
+  }
+
+  // Initial load
+  loadMore();
+
+  loadMoreBtn.addEventListener("click", loadMore);
+
+  searchInput.addEventListener("input", () => {
+    loadedCount = loadBatch;
+    renderPosters(searchInput.value);
+  });
+</script>
+
+</body>
+</html>
